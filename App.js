@@ -1,15 +1,19 @@
 import React from 'react';
 import { WebView, StyleSheet, Text, View } from 'react-native';
+import { NativeRouter, Route, Link } from 'react-router-native'
+import LoginScreen from './components/LoginScreen.jsx'
+import RegisterScreen from './components/RegisterScreen.jsx'
 
 export default class App extends React.Component {
   render() {
     return (
-
-      <WebView 
-        source={{uri: 'https://radiant-springs-36432.herokuapp.com/'}}
-        style={styles.container}>
-
-      </WebView>
+      <NativeRouter>
+        <View>
+          <Route exact path="/" component={LoginScreen}/> # Login
+          <Route path="/register" component={RegisterScreen}/> # Create an account here
+          <Route path="/login" component={LoginScreen}/> # Create an account here
+        </View>
+      </NativeRouter>
     );
   }
 }
