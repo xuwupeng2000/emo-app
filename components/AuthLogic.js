@@ -1,15 +1,28 @@
-class AuthLogic {
+import { AsyncStorage } from 'react-native'
 
-  isAuthenticated() {
-    return this.getAuthToken();
+class AuthLogic {
+  constructor() {
+    this.setupAuthTokenFromStorage;
   }
 
-  saveAuthToken(token) {
-    localStorage.setItem('authToken', token);
+  setupAuthTokenFromStorage() {
+    AsyncStorage.getItem('authToken', (value) => {
+      this.token = value;
+    });
+  }
+
+  saveAuthTokenFromHttp(token) {
+    AsyncStorage.setItem('authToken', token, () => {
+      this.token = token;
+    });
+  }
+
+  isAuthenticated() {
+    return this.token;
   }
 
   getAuthToken() {
-    return localStorage.getItem('authToken');
+    return this.token;
   }
 
 };

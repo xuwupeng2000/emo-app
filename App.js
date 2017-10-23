@@ -1,28 +1,27 @@
-import React from 'react';
-import { WebView, StyleSheet, Text, View } from 'react-native';
-import { NativeRouter, Route, Link } from 'react-router-native'
-import LoginScreen from './components/LoginScreen.jsx'
-import RegisterScreen from './components/RegisterScreen.jsx'
+import React, { Component } from 'react'
+import { StatusBar } from "react-native";
+import LoginScreen from './components/LoginScreen.js'
+import RegisterScreen from './components/RegisterScreen.js'
+import DeviceStackNav from './components/ManageDeviceScreen.js'
+import { DrawerNavigator } from 'react-navigation';
+import { Root } from 'native-base';
 
-export default class App extends React.Component {
+class HomeScreen extends Component {
+ static navigationOptions = {
+    drawerLabel: 'Login'
+  };
+
   render() {
     return (
-      <NativeRouter>
-        <View>
-          <Route exact path="/" component={LoginScreen}/> # Login
-          <Route path="/register" component={RegisterScreen}/> # Create an account here
-          <Route path="/login" component={LoginScreen}/> # Create an account here
-        </View>
-      </NativeRouter>
+      <LoginScreen {...this.props} />
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+const EmoApp = DrawerNavigator({
+  Home: { screen: HomeScreen },
+  Register: { screen: RegisterScreen },
+  Devices: { screen: DeviceStackNav},
 });
+
+export default EmoApp;
