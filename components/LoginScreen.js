@@ -12,8 +12,8 @@ export default class LoginScreen extends Component {
     super();
 
     this.state = {
-      username: '',
-      password: ''
+      username: 'jack',
+      password: 'pass'
     };
   }
 
@@ -38,11 +38,11 @@ export default class LoginScreen extends Component {
           <Form>
             <Item floatingLabel>
               <Label>Username</Label>
-              <Input autoCapitalize = 'none' onChangeText={(text) => this.setState({username: text})} />
+              <Input defaultValue={this.state.username} autoCapitalize = 'none' onChangeText={(text) => this.setState({username: text})} />
             </Item>
             <Item floatingLabel>
               <Label>Password</Label>
-              <Input onChangeText={(text) => this.setState({password: text})} secureTextEntry={true} />
+              <Input defaultValue={this.state.password} onChangeText={(text) => this.setState({password: text})} secureTextEntry={true} />
             </Item>
 
             <Button style={styles.btn} onPress={() => { this.authenticate() }} full bordered>
