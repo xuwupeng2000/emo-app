@@ -5,11 +5,6 @@ import { H1, Button, Label, FooterTab, Body, Container, Footer, Header, Content,
 
 export default class RegisterScreen extends Component {
 
-  static navigationOptions = {
-    drawerLabel: 'Register',
-    header: null
-  };
-
   constructor() {
     super();
 
@@ -71,7 +66,6 @@ export default class RegisterScreen extends Component {
             </Button>
           </Form>
         </Content>
-
       </Container>
     );
   }

@@ -30,8 +30,25 @@ export default class AddNewDeviceScreen extends Component {
   }
 
   render() {
+
+    let drawer = (
+      <Header>
+        <Left>
+          <Button onPress={() => this.props.navigation.navigate('DrawerOpen')} transparent>
+            <Icon name='menu' />
+          </Button>
+        </Left>
+        <Body>
+          <Title>Devices 📱</Title>
+        </Body>
+        <Right />
+      </Header>
+    );
+
     return (
       <Container>
+        {drawer}
+
         <Content padder>
           <Form>
             <Item floatingLabel>

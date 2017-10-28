@@ -2,15 +2,8 @@ import React, {Component} from 'react';
 import { Alert, StatusBar, StyleSheet } from "react-native";
 import { httpClient } from './HttpClient.js'
 import { Card, CardItem, Icon, Button, Body, Container, Header, Content, Text, Left, Right, Title, List, ListItem, Footer, FooterTab } from 'native-base';
-import { StackNavigator } from 'react-navigation';
-import AddNewDeviceScreen from './AddNewDeviceScreen.js';
 
-class ManageDevicesScreen extends Component {
-
-  static navigationOptions = {
-    drawerLabel: 'Manage devices',
-    header: null
-  };
+export default class ManageDevicesScreen extends Component {
 
   constructor() {
     super();
@@ -77,20 +70,23 @@ class ManageDevicesScreen extends Component {
       );
     });
 
+    let drawer = (
+      <Header>
+        <Left>
+          <Button onPress={() => this.props.navigation.navigate('DrawerOpen')} transparent>
+            <Icon name='menu' />
+          </Button>
+        </Left>
+        <Body>
+          <Title>Devices 📱</Title>
+        </Body>
+        <Right />
+      </Header>
+    );
+
     return (
       <Container>
-
-        <Header>
-          <Left>
-            <Button onPress={() => this.props.navigation.navigate('DrawerOpen')} transparent>
-              <Icon name='menu' />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Devices 📱</Title>
-          </Body>
-          <Right />
-        </Header>
+        {drawer}
 
         <Content>
           <Card>
@@ -111,13 +107,6 @@ class ManageDevicesScreen extends Component {
     )
   }
 };
-
-const DeviceStackNav = StackNavigator({
-  ManageDevices: { screen: ManageDevicesScreen },
-  LinkNewDevice: { screen: AddNewDeviceScreen },
-});
-
-export default DeviceStackNav;
 
 const styles = StyleSheet.create({
   device: {

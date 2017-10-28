@@ -3,6 +3,8 @@ import { StatusBar, StyleSheet } from "react-native";
 import authLogic from './AuthLogic.js'
 import { httpClient } from './HttpClient.js'
 import { H1, Button, Label, FooterTab, Body, Container, Footer, Header, Content, Form, Item, Input, Text, Left, Right, Icon, Title } from 'native-base';
+import Emojicon from 'react-native-emojicon';
+
 
 export default class LoginScreen extends Component {
 
@@ -30,19 +32,8 @@ export default class LoginScreen extends Component {
   render() {
     return (
       <Container>
-
         <Header>
-          <Left>
-            <Button onPress={() => this.props.navigation.navigate('DrawerOpen')} transparent>
-              <Icon name='menu' />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Login 😸</Title>
-          </Body>
-          <Right />
         </Header>
-
         <Content padder>
           <Form>
             <Item floatingLabel>
