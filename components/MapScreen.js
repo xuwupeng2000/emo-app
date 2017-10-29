@@ -112,10 +112,15 @@ export default class MapScreen extends Component {
   panToNext(index) {
     if (index != 0) {
       let nextIndex = index - 1;
+
       let goForTrack = this.state.geoTracks[nextIndex];
-      let coord = {latitude: goForTrack.lat, longitude: goForTrack.lng};
+      let goForCoord = {latitude: goForTrack.lat, longitude: goForTrack.lng};
+
+      let currentTrack = this.state.geoTracks[index];
+      let currentCoord = {latitude: currentTrack.lat, longitude: currentTrack.lng}; 
+
       let marker = this.refs[nextIndex];
-      this.mapRef.animateToCoordinate(coord);
+      this.mapRef.animateToCoordinate(goForCoord);
       marker.showCallout();
     }
   }
@@ -123,10 +128,14 @@ export default class MapScreen extends Component {
   panToPrev(index) {
     if (index != (_.size(this.state.geoTracks) - 1)) {
       let prevIndex = index + 1; // most recent track is on the head of the array
+
+      let currentTrack = this.state.geoTracks[index];
+      let currentCoord = {latitude: currentTrack.lat, longitude: currentTrack.lng}; 
+
       let goForTrack = this.state.geoTracks[prevIndex];
-      let coord = {latitude: goForTrack.lat, longitude: goForTrack.lng};
+      let goForCoord = {latitude: goForTrack.lat, longitude: goForTrack.lng};
       let marker = this.refs[prevIndex];
-      this.mapRef.animateToCoordinate(coord);
+      this.mapRef.animateToCoordinate(goForCoord);
       marker.showCallout();
     }
   }
@@ -135,7 +144,7 @@ export default class MapScreen extends Component {
     let coords = _.map(this.state.geoTracks, (track) => {
       let coord = {latitude: track.lat, longitude: track.lng};
       return coord;
-    })
+    });
 
     return (
       <MapView.Polyline 
@@ -164,6 +173,7 @@ export default class MapScreen extends Component {
 
   render() {
     let markers = this.renderMarkers();
+    let ploylines = this.renderPolylines();
 
     return (
       <MapView 
