@@ -5,7 +5,6 @@ import { httpClient } from './HttpClient.js'
 import { H1, Button, Label, FooterTab, Body, Container, Footer, Header, Content, Form, Item, Input, Text, Left, Right, Icon, Title } from 'native-base';
 import Emojicon from 'react-native-emojicon';
 
-
 export default class LoginScreen extends Component {
 
   constructor() {
