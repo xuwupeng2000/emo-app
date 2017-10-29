@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Alert, StatusBar, StyleSheet } from "react-native";
 import { httpClient } from './HttpClient.js'
-import { Card, CardItem, Icon, Button, Body, Container, Header, Content, Text, Left, Right, Title, List, ListItem, Footer, FooterTab } from 'native-base';
+import { View, Card, CardItem, Icon, Button, Body, Container, Header, Content, Text, Left, Right, Title, List, ListItem, Footer, FooterTab } from 'native-base';
 
 export default class ManageDevicesScreen extends Component {
 
@@ -54,19 +54,30 @@ export default class ManageDevicesScreen extends Component {
       });
   }
 
+  onViewTrackButtonPress(device) {
+    this.props.navigation.navigate('Map', { params: device });
+  }
+
   render() {
     let devices = this.state.devices.map((d) => {
       return (
-        <CardItem key={d.serial_code} style={styles.device}>
-          <Body style={styles.device}>
+        <View key={d.serial_code} >
+          <CardItem>
             <Text>{d.serial_code}</Text>
-          </Body>
-          <Right>
-            <Button transparent onPress={() => {this.onUnlinkButtonPress(d)}} iconLeft danger>
-              <Icon name="ios-remove-circle"></Icon>
-            </Button>
-          </Right>
-        </CardItem>
+          </ CardItem>
+          <CardItem>
+            <Left>
+              <Button transparent onPress={() => {this.onViewTrackButtonPress(d)}} bordered full>
+                <Text>View Tacks</Text>
+              </Button>
+            </Left>
+            <Right>
+              <Button transparent onPress={() => {this.onUnlinkButtonPress(d)}} bordered full danger>
+                <Text>Remove</Text>
+              </Button>
+            </Right>
+          </CardItem>
+        </View>
       );
     });
 
@@ -106,9 +117,4 @@ export default class ManageDevicesScreen extends Component {
 
     )
   }
-};
-
-const styles = StyleSheet.create({
-  device: {
-  }
-});
+}
