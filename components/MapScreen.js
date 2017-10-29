@@ -30,8 +30,31 @@ export default class MapScreen extends Component {
   }
 
   componentDidMount() {
-    this.fetchGeoTracks();
+    let { params } = this.props.navigation.state;
+    this.fetchGeoTracks(params);
   }
+
+  fetchGeoTracks(device) {
+    let serialCode = device.params.serial_code;
+    httpClient.get('/api/v1/user_geo_tracks', { params: 
+        {serial_code: serialCode} 
+      })
+      .then((resp) => {
+        let tracks = resp.data.geo_tracks;
+        let sensors = resp.data.sensors;
+
+        this.setState({ geoTracks: tracks, sensorList: sensors });
+
+        let mostRecentIndex = (_.size(tracks) - 1);
+        _.delay(() => {
+          this.openMarkerCallout(mostRecentIndex);
+        }, 100);
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  }
+
 
   getCurrentUserLocation() {
     navigator.geolocation.getCurrentPosition(
@@ -94,13 +117,13 @@ export default class MapScreen extends Component {
 
           <Row>
             <Col>
-              <Button disabled={index === (_.size(this.state.geoTracks) - 1)} bordered full onPress={() => { this.panToPrev(index) }}> 
-                <Text>PREV</Text> 
+              <Button disabled={index === (_.size(this.state.geoTracks) - 1)} bordered full onPress={() => { this.panToNext(index) }}> 
+                <Text>Next</Text> 
               </Button>
             </Col>
             <Col>
-              <Button disabled={index === 0} bordered full onPress={() => { this.panToNext(index) }}> 
-                <Text>NEXT</Text> 
+              <Button disabled={index === 0} bordered full onPress={() => { this.panToPrev(index) }}> 
+                <Text>Prev</Text> 
               </Button>
             </Col>
           </Row>
@@ -109,35 +132,25 @@ export default class MapScreen extends Component {
     );
   }
 
-  panToNext(index) {
+  panToPrev(index) {
     if (index != 0) {
       let nextIndex = index - 1;
 
-      let goForTrack = this.state.geoTracks[nextIndex];
-      let goForCoord = {latitude: goForTrack.lat, longitude: goForTrack.lng};
-
-      let currentTrack = this.state.geoTracks[index];
-      let currentCoord = {latitude: currentTrack.lat, longitude: currentTrack.lng}; 
-
-      let marker = this.refs[nextIndex];
-      this.mapRef.animateToCoordinate(goForCoord);
-      marker.showCallout();
+      this.openMarkerCallout(nextIndex);
     }
   }
 
-  panToPrev(index) {
+  panToNext(index) {
     if (index != (_.size(this.state.geoTracks) - 1)) {
       let prevIndex = index + 1; // most recent track is on the head of the array
-
-      let currentTrack = this.state.geoTracks[index];
-      let currentCoord = {latitude: currentTrack.lat, longitude: currentTrack.lng}; 
-
-      let goForTrack = this.state.geoTracks[prevIndex];
-      let goForCoord = {latitude: goForTrack.lat, longitude: goForTrack.lng};
-      let marker = this.refs[prevIndex];
-      this.mapRef.animateToCoordinate(goForCoord);
-      marker.showCallout();
+      this.openMarkerCallout(prevIndex);
     }
+  }
+
+  openMarkerCallout(index) {
+    let marker = this.refs[index];
+    this.mapRef.animateToCoordinate(marker.props.coordinate);
+    marker.showCallout();
   }
   
   renderPolylines() {
@@ -152,23 +165,6 @@ export default class MapScreen extends Component {
         strokeColor='#34495e'	
         coordinates={coords} />
     );
-  }
-
-  fetchGeoTracks() {
-    httpClient.get('/api/v1/user_geo_tracks')
-      .then((resp) => {
-        let tracks = resp.data.geo_tracks;
-        let sensors = resp.data.sensors;
-
-        this.setState({ geoTracks: tracks, sensorList: sensors });
-
-        let mostRecent = _.head(tracks);
-        let mostRecentCoord = {latitude: mostRecent.lat, longitude: mostRecent.lng};
-        this.mapRef.animateToCoordinate(mostRecentCoord, 1);
-      })
-      .catch((err) => {
-        alert(err);
-      });
   }
 
   render() {
