@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { Dimensions, StyleSheet } from 'react-native'
-import { View, Container, Header, Content, Card, CardItem, Body, Text, Left, Badge, H2, Col, Row, Grid, Button } from 'native-base';
+import { View, Dimensions, StyleSheet, StyleProvider } from 'react-native'
+import { H1, Button, Label, FooterTab, Body, Container, Footer, Header, Content, Form, Item, Input, Text, Left, Right, Icon, Title, H2, Col, Row, Grid } from 'native-base';
 import { MapView } from 'expo';
 import authLogic from './AuthLogic.js'
 import { httpClient } from './HttpClient.js'
+import getTheme from '../native-base-theme/components';
+import material from '../native-base-theme/variables/material';
 
 let { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -149,8 +151,10 @@ export default class MapScreen extends Component {
 
   openMarkerCallout(index) {
     let marker = this.refs[index];
-    this.mapRef.animateToCoordinate(marker.props.coordinate);
-    marker.showCallout();
+    if (marker) {
+      this.mapRef.animateToCoordinate(marker.props.coordinate);
+      marker.showCallout();
+    }
   }
   
   renderPolylines() {

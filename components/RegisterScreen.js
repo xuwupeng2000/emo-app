@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import { StatusBar, StyleSheet } from "react-native";
 import { httpClient } from './HttpClient.js'
-import { H1, Button, Label, FooterTab, Body, Container, Footer, Header, Content, Form, Item, Input, Text, Left, Right, Icon, Title } from 'native-base';
+import { H1, Button, Label, FooterTab, Body, Container, Footer, Header, Content, Form, Item, Input, Text, Left, Right, Icon, Title, StyleProvider } from 'native-base';
+import getTheme from '../native-base-theme/components';
+import material from '../native-base-theme/variables/material';
 
 export default class RegisterScreen extends Component {
 
@@ -28,6 +30,7 @@ export default class RegisterScreen extends Component {
 
   render() {
     return (
+      <StyleProvider style={getTheme(material)}>
       <Container>
         <Header>
           <Left>
@@ -67,6 +70,7 @@ export default class RegisterScreen extends Component {
           </Form>
         </Content>
       </Container>
+      </ StyleProvider>
     );
   }
 }

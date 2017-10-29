@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
-import { Alert, StatusBar, StyleSheet } from "react-native";
+import { View, Alert, StatusBar, StyleSheet } from "react-native";
 import { httpClient } from './HttpClient.js'
-import { View, Card, CardItem, Icon, Button, Body, Container, Header, Content, Text, Left, Right, Title, List, ListItem, Footer, FooterTab } from 'native-base';
+import { CardItem, Card, H1, Button, Label, FooterTab, Body, Container, Footer, Header, Content, Form, Item, Input, Text, Left, Right, Icon, Title, StyleProvider } from 'native-base';
+import getTheme from '../native-base-theme/components';
+import material from '../native-base-theme/variables/material';
 
 export default class ManageDevicesScreen extends Component {
 
@@ -96,6 +98,7 @@ export default class ManageDevicesScreen extends Component {
     );
 
     return (
+      <StyleProvider style={getTheme(material)}>
       <Container>
         {drawer}
 
@@ -114,7 +117,7 @@ export default class ManageDevicesScreen extends Component {
           </FooterTab>
         </Footer>
       </Container>
-
+      </ StyleProvider>
     )
   }
 }
