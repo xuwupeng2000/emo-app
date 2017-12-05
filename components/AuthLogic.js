@@ -17,6 +17,11 @@ class AuthLogic {
     });
   }
 
+  logOut() {
+    // Todo log out on Server
+    AsyncStorage.removeItem('authToken');
+  }
+
   isAuthenticated() {
     return this.token;
   }
