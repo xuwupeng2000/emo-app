@@ -11,13 +11,13 @@ export default class LoginScreen extends Component {
     super();
 
     this.state = {
-      username: '',
-      password: ''
+      username: 'jack',
+      password: 'pass'
     };
   }
 
   authenticate() {
-    httpClient.post('/api/v1/user_tokens', { auth: this.state })
+    httpClient.post('/api/v1/user_tokens', {auth: this.state})
       .then((resp) => {
         let { token, payload } = resp.data.auth_token;
         authLogic.saveAuthTokenFromHttp(token);
@@ -37,11 +37,11 @@ export default class LoginScreen extends Component {
           <Form>
             <Item floatingLabel>
               <Label>Username</Label>
-              <Input defaultValue={this.state.username} autoCapitalize='none' onChangeText={(text) => this.setState({ username: text })} />
+              <Input defaultValue={this.state.username} autoCapitalize = 'none' onChangeText={(text) => this.setState({username: text})} />
             </Item>
             <Item floatingLabel>
               <Label>Password</Label>
-              <Input defaultValue={this.state.password} onChangeText={(text) => this.setState({ password: text })} secureTextEntry={true} />
+              <Input defaultValue={this.state.password} onChangeText={(text) => this.setState({password: text})} secureTextEntry={true} />
             </Item>
 
             <Button style={styles.btn} onPress={() => { this.authenticate() }} full bordered>
@@ -59,7 +59,7 @@ export default class LoginScreen extends Component {
 
 const styles = StyleSheet.create({
   btn: {
-    marginTop: 10,
+    marginTop:10,
     marginBottom: 10
   }
 });
