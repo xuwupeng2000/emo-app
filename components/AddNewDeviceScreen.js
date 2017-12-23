@@ -20,7 +20,7 @@ export default class AddNewDeviceScreen extends Component {
   }
 
   addSensorToAccount() {
-    httpClient.post('/api/v1/user_sensors', {sensor: this.state})
+    httpClient.post('/api/v1/user_sensors', { sensor: this.state })
       .then((resp) => {
         this.props.navigation.navigate('ManageDevices');
       })
@@ -34,9 +34,6 @@ export default class AddNewDeviceScreen extends Component {
     let drawer = (
       <Header>
         <Left>
-          <Button onPress={() => this.props.navigation.navigate('DrawerOpen')} transparent>
-            <Icon name='menu' />
-          </Button>
         </Left>
         <Body>
           <Title>Devices 📱</Title>
@@ -53,11 +50,11 @@ export default class AddNewDeviceScreen extends Component {
           <Form>
             <Item floatingLabel>
               <Label>Serial code</Label>
-              <Input autoCapitalize = 'none' onChangeText={(text) => this.setState({serial_code: text})} />
+              <Input autoCapitalize='none' onChangeText={(text) => this.setState({ serial_code: text })} />
             </Item>
             <Item floatingLabel>
               <Label>Serial code confirmation</Label>
-              <Input autoCapitalize = 'none' onChangeText={(text) => this.setState({serial_code_confirmation: text})} />
+              <Input autoCapitalize='none' onChangeText={(text) => this.setState({ serial_code_confirmation: text })} />
             </Item>
 
             <Button style={styles.btn} onPress={() => { this.addSensorToAccount() }} full bordered>
@@ -72,7 +69,7 @@ export default class AddNewDeviceScreen extends Component {
 
 const styles = StyleSheet.create({
   btn: {
-    marginTop:10,
+    marginTop: 10,
     marginBottom: 10
   }
 });

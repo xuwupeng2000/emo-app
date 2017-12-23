@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { Dimensions, StyleSheet } from 'react-native'
-import { View, Container, Header, Content, Card, CardItem, Body, Text, Left, Badge, H2, Col, Row, Grid, Button } from 'native-base';
+import { View, Text, H2, Col, Row, Grid, Button, Body, Container, Header, Content, Left, Right, Title, Icon } from 'native-base';
 import { MapView } from 'expo';
-import authLogic from './AuthLogic.js'
 import { httpClient } from './HttpClient.js'
 
 let { width, height } = Dimensions.get('window');
@@ -14,15 +13,15 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export default class MapScreen extends Component {
 
-  constructor(){
+  constructor() {
     super();
 
-    this.state = { 
+    this.state = {
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
       },
       sensorList: [],
       geoTracks: []
@@ -30,15 +29,16 @@ export default class MapScreen extends Component {
   }
 
   componentDidMount() {
-    let { params } = this.props.navigation.state;
-    this.fetchGeoTracks(params);
+    let _device = this.props.navigation.state.params.device;
+    this.fetchGeoTracks(_device);
   }
 
   fetchGeoTracks(device) {
-    let serialCode = device.params.serial_code;
-    httpClient.get('/api/v1/user_geo_tracks', { params: 
-        {serial_code: serialCode} 
-      })
+    let serialCode = device.serial_code;
+    httpClient.get('/api/v1/user_geo_tracks', {
+      params:
+        { serial_code: serialCode }
+    })
       .then((resp) => {
         let tracks = resp.data.geo_tracks;
         let sensors = resp.data.sensors;
@@ -71,13 +71,13 @@ export default class MapScreen extends Component {
 
   renderMarkers() {
     let markers = this.state.geoTracks.map((track, index) => {
-      let coord = {latitude: track.lat, longitude: track.lng};
+      let coord = { latitude: track.lat, longitude: track.lng };
       let description = this.renderDescription(track, index);
 
       return (
-        <MapView.Marker  
+        <MapView.Marker
           ref={index}
-          key={track.id} 
+          key={track.id}
           coordinate={coord} >
 
           <MapView.Callout tooltip={false} >
@@ -117,18 +117,18 @@ export default class MapScreen extends Component {
 
           <Row>
             <Col>
-              <Button disabled={index === (_.size(this.state.geoTracks) - 1)} bordered full onPress={() => { this.panToNext(index) }}> 
-                <Text>Next</Text> 
+              <Button disabled={index === (_.size(this.state.geoTracks) - 1)} bordered full onPress={() => { this.panToNext(index) }}>
+                <Text>Next</Text>
               </Button>
             </Col>
             <Col>
-              <Button disabled={index === 0} bordered full onPress={() => { this.panToPrev(index) }}> 
-                <Text>Prev</Text> 
+              <Button disabled={index === 0} bordered full onPress={() => { this.panToPrev(index) }} >
+                <Text>Prev</Text>
               </Button>
             </Col>
           </Row>
         </Grid>
-      </View>
+      </View >
     );
   }
 
@@ -152,36 +152,38 @@ export default class MapScreen extends Component {
     this.mapRef.animateToCoordinate(marker.props.coordinate);
     marker.showCallout();
   }
-  
+
   renderPolylines() {
     let coords = _.map(this.state.geoTracks, (track) => {
-      let coord = {latitude: track.lat, longitude: track.lng};
+      let coord = { latitude: track.lat, longitude: track.lng };
       return coord;
     });
 
     return (
-      <MapView.Polyline 
+      <MapView.Polyline
         strokeWidth={4}
-        strokeColor='#34495e'	
+        strokeColor='#34495e'
         coordinates={coords} />
     );
   }
 
   render() {
     let markers = this.renderMarkers();
-    let ploylines = this.renderPolylines();
 
     return (
-      <MapView 
-        style={{flex: 1}}
-        region={ this.state.region }
-        fitToElements={MapView.ANIMATED_FIT}
-        ref={(ref) => { this.mapRef = ref }}
-      >
+      <Container>
 
-      {markers}
+        <MapView
+          style={{ flex: 1 }}
+          region={this.state.region}
+          fitToElements={MapView.ANIMATED_FIT}
+          ref={(ref) => { this.mapRef = ref }} >
 
-      </MapView>
+          {markers}
+
+        </MapView>
+
+      </Container>
     )
   }
 }

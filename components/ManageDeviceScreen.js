@@ -1,7 +1,6 @@
-import React, {Component} from 'react';
-import { Alert, StatusBar, StyleSheet } from "react-native";
+import React, { Component } from 'react';
 import { httpClient } from './HttpClient.js'
-import { View, Card, CardItem, Icon, Button, Body, Container, Header, Content, Text, Left, Right, Title, List, ListItem, Footer, FooterTab } from 'native-base';
+import { View, Card, CardItem, Icon, Button, Body, Container, Item, Content, Text, Footer, FooterTab } from 'native-base';
 
 export default class ManageDevicesScreen extends Component {
 
@@ -9,34 +8,12 @@ export default class ManageDevicesScreen extends Component {
     super();
 
     this.state = {
-      devices: [],
+      devices: []
     };
+  }
 
+  componentDidMount() {
     this.listSensors();
-  }
-
-  unlinkSensorToAccount(device) {
-    let id = device.serial_code;
-    httpClient.delete('/api/v1/user_sensors/' + id)
-      .then((resp) => {
-        let sensors = resp.data.sensors;
-        this.setState({ devices: sensors });
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  }
-
-  onUnlinkButtonPress(device) {
-    Alert.alert(
-      null,
-      'Are you sure you want to unlink this device?',
-      [
-        {text: 'Cancel', onPress: () => {}, style: 'cancel'},
-        {text: 'Confirm', onPress: () => {this.unlinkSensorToAccount(device)}},
-      ],
-      { cancelable: false }
-    )
   }
 
   onAddButtonPress() {
@@ -54,50 +31,32 @@ export default class ManageDevicesScreen extends Component {
       });
   }
 
-  onViewTrackButtonPress(device) {
-    this.props.navigation.navigate('Map', { params: device });
+  onViewDetailsButtonPress(d) {
+    this.props.navigation.navigate('Details', { device: d });
   }
 
   render() {
     let devices = this.state.devices.map((d) => {
       return (
         <View key={d.serial_code} >
-          <CardItem>
-            <Text>{d.serial_code}</Text>
-          </ CardItem>
-          <CardItem>
-            <Left>
-              <Button transparent onPress={() => {this.onViewTrackButtonPress(d)}} bordered full>
-                <Text>View Tacks</Text>
-              </Button>
-            </Left>
-            <Right>
-              <Button transparent onPress={() => {this.onUnlinkButtonPress(d)}} bordered full danger>
-                <Text>Remove</Text>
-              </Button>
-            </Right>
-          </CardItem>
+          <Card>
+            <CardItem>
+              <Text>{d.serial_code}</Text>
+            </CardItem>
+            <CardItem>
+              <Body>
+                <Button transparent onPress={() => { this.onViewDetailsButtonPress(d) }} bordered full>
+                  <Text>View</Text>
+                </Button>
+              </Body>
+            </CardItem>
+          </Card>
         </View>
       );
     });
 
-    let drawer = (
-      <Header>
-        <Left>
-          <Button onPress={() => this.props.navigation.navigate('DrawerOpen')} transparent>
-            <Icon name='menu' />
-          </Button>
-        </Left>
-        <Body>
-          <Title>Devices 📱</Title>
-        </Body>
-        <Right />
-      </Header>
-    );
-
     return (
       <Container>
-        {drawer}
 
         <Content>
           <Card>
@@ -107,7 +66,7 @@ export default class ManageDevicesScreen extends Component {
 
         <Footer>
           <FooterTab>
-            <Button onPress={() => {this.onAddButtonPress()}}>
+            <Button onPress={() => { this.onAddButtonPress() }}>
               <Icon name="ios-add-circle-outline" />
               <Text>Add new device</Text>
             </Button>

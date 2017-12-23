@@ -51,28 +51,11 @@ export default class SettingScreen extends Component {
         </Header>
 
         <Content style={styles.container}>
-
-          <Form style={styles.one}>
-            <Item floatingLabel>
-              <Label>EC Number</Label>
-              <Input autoCapitalize='none' onChangeText={(text) => this.setState({ ecNumber: text })} />
-            </Item>
-
-            <Button style={styles.btn} onPress={() => { this.setEcNumber() }} full bordered>
-              <Text>Confirm EC Number</Text>
-            </Button>
-
-            <Button style={styles.btn} onPress={() => { this.startRemoteListening() }} full bordered>
-              <Text>Start Remote Listening</Text>
-            </Button>
-          </Form>
-
           <View style={styles.two}>
             <Button style={styles.btn} onPress={() => { this.signOff() }} full bordered>
               <Text>Log Out</Text>
             </Button>
           </View>
-
         </Content>
       </Container >
     );
